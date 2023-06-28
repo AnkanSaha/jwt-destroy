@@ -1,2 +1,2 @@
-# jwt-distroy
-JWT-Destroy is an enhanced version of the popular JSONWebToken npm package. It extends its functionality by offering manual expiry control, allowing developers to easily manage token expiration within their applications. 
+# JWT-Destroy: The Ultimate JWT Manipulation Tool
+JWT-Destroy is a powerful superset of the popular jsonwebtoken npm package. It provides seamless integration with jsonwebtoken's features, allowing you to effortlessly generate and verify tokens. Additionally, with manual token expiry capabilities, JWT-Destroy empowers you with precise control over token lifetimes.
