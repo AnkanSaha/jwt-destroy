@@ -1,5 +1,5 @@
-import {green} from 'outers'; // Importing from outers for coloring the output
-import {sign} from 'jsonwebtoken'; // Importing jsonwebtoken for generating the token
+import {red} from 'outers'; // Importing from outers for coloring the output
+import {sign, verify} from 'jsonwebtoken'; // Importing jsonwebtoken for generating the token
 
 // Current Time
 const todayDate = `${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
@@ -35,15 +35,156 @@ export class Jwt {
  * @returns a Promise that resolves to a Record<string, unknown> object.
  */
 	public async generate(Payload: unknown, expiry = '1h'): Promise<Record<string, unknown>> {
-		const signedData: string = sign({data: Payload}, this.signatureKey, {expiresIn: expiry});
-		const fullResult: Record<string, unknown> = {
-			message: 'Token generated successfully',
-			toKen: signedData,
-			algoRithm: 'HS256 (Default)',
-			expiry,
-			currentTimeStamp: todayDate,
-		};
-		green(fullResult);
-		return fullResult;
+		try {
+			if (!Payload) {
+				red('Payload is required'); // Log the error
+				return {
+					status: 'Empty',
+					message: 'Payload is required',
+					algoRithm: 'HS256 (Default)',
+					currentTimeStamp: todayDate,
+				}; // Return the error
+			}
+
+			const signedData: string = sign({data: Payload}, this.signatureKey, {expiresIn: expiry}); // Generate the token
+			const fullResult: Record<string, unknown> = {
+				status: 'Success',
+				message: 'Token generated successfully',
+				toKen: signedData,
+				algoRithm: 'HS256 (Default)',
+				expiry,
+				currentTimeStamp: todayDate,
+			}; // Create a result object
+			return fullResult; // Return the result
+		} catch {
+			const errorResult: Record<string, unknown> = {
+				status: 'error',
+				message: 'Error generating token',
+				currentTimeStamp: todayDate,
+				algoRithm: 'HS256 (Default)',
+			}; // Create an error object
+			red('Error generating token'); // Log the error
+			return errorResult; // Return the error
+		}
+	}
+
+	// Destroy the token
+	/**
+ * The `destroy` function takes a token, adds ciphers to specific positions, reverses the token, and
+ * returns a result object with the modified token and other information.
+ * @param {string} token - The `token` parameter is a string that represents a token.
+ * @returns The `destroy` function returns a Promise that resolves to a `Record<string, unknown>`
+ * object.
+ */
+	public async destroy(token: string): Promise<Record<string, unknown>> {
+		try {
+			const cipherList = ['SIDF524', 'LHypk41', '@thusngvgvergh', 'egfr##.gokro', 'frevnjnr@872@erge']; // List of supported algorithms keys
+			const positions: number[] = [5, 3, 9, 4, 7]; // List of positions
+			let tokenArray: string[] = token.split(''); // Split the token
+
+			cipherList.forEach((cipher: string, index: number) => {
+				tokenArray.splice(positions[index], 0, cipher); // Add the cipher to the token
+			}); // Loop through the list of supported algorithms
+
+			tokenArray = tokenArray.reverse(); // Reverse the token
+			const modifiedToken: string = tokenArray.join(''); // Join the token
+
+			const result: Record<string, unknown> = {
+				status: 'Success',
+				message: 'Token destroyed successfully',
+				token: modifiedToken,
+				currentTimeStamp: todayDate,
+				algoRithm: 'HS256 (Default)',
+			}; // Create a result object
+
+			return result; // Return the result
+		} catch {
+			return {
+				status: 'error',
+				message: 'Error destroying token',
+				currentTimeStamp: todayDate,
+				algoRithm: 'HS256 (Default)',
+			}; // Create an error object
+		}
+	}
+
+	/**
+ * The function decodes a token by verifying its cipher and checking if it is valid, returning an error
+ * object if it is empty, destroyed, or invalid.
+ * @param {string} token - The `token` parameter is a string that represents a token that needs to be
+ * decoded.
+ * @returns The function `decode` returns a Promise that resolves to an unknown value. The value being
+ * returned depends on the conditions inside the function.
+ */
+	public async decode(token: string): Promise<unknown> {
+		try {
+			if (!token) {
+				return {
+					status: 'empty',
+					message: 'Token is required',
+					currentTimeStamp: todayDate,
+					algoRithm: 'HS256 (Default)',
+				}; // Create an error object
+			}
+
+			const cipherResult = await this.verifyCipher(token);
+			if (cipherResult.status === 'Destroyed') {
+				return cipherResult;
+			}
+
+			// Check if the token is destroyed by manually checking the token
+			return verify(token, this.signatureKey); // Verify the token
+		} catch {
+			return {
+				status: 'Invalid',
+				message: 'Invalid Token Provided, token might have been tampered, not match the signature key or expired',
+				currentTimeStamp: todayDate,
+				algoRithm: 'HS256 (Default)',
+			}; // Create an error object
+		}
+	}
+
+	/**
+ * The function `verifyCipher` checks if a given token has been manually destroyed by checking if it
+ * contains any ciphers from a list.
+ * @param {string} token - The `token` parameter is a string that represents a token.
+ * @returns an object with the following properties:
+ */
+	private async verifyCipher(token: string) {
+		try {
+			// Checking if the token is destroyed by manually checking the token
+			const cipherList = ['SIDF524', 'LHypk41', '@thusngvgvergh', 'egfr##.gokro', 'frevnjnr@872@erge']; // List of supported algorithms keys
+			let cipherResult = false; // Cipher result
+			cipherList.forEach((cipher: string) => {
+				if (token.includes(cipher)) {
+					cipherResult = true;
+				} else {
+					cipherResult = false;
+				}
+			}); // Check if the token contains the cipher
+
+			if (!cipherResult) {
+				return {
+					status: 'Not Destroyed',
+					message: 'Token is not Destroyed Manually',
+					currentTimeStamp: todayDate,
+					algoRithm: 'HS256 (Default)',
+				}; // Create an error object
+			}
+
+			return {
+				status: 'Destroyed',
+				message: 'Token is Destroyed Manually with the destroy() method',
+				currentTimeStamp: todayDate,
+				algoRithm: 'HS256 (Default)',
+			}; // Create an error object
+		} catch {
+			return {
+				status: 'error',
+				message: 'Error verifying token',
+				currentTimeStamp: todayDate,
+				algoRithm: 'HS256 (Default)',
+			}; // Create an error object
+		}
 	}
 }
