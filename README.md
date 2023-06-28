@@ -46,3 +46,5 @@ const payload = await operation.decode(token); // Returns the payload if the tok
 const destroyedToken = await operation.destroy(token); // Destroys the token if it is valid & return a new Destroyed JWT object, else returns a object with error message
 
 ```
+
+## Make sure to explore this package to its full potential by using this package in your projects. Happy Coding!
