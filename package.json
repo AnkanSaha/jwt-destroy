@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AnkanSaha/jwt-distroy.git"
+    "url": "https://github.com/AnkanSaha/jwt-destroy.git"
   },
   "keywords": [
     "jwt",
@@ -26,7 +26,7 @@
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.2",
     "jsonwebtoken": "^9.0.0",
-    "outers": "^2.2.5"
+    "outers": "^2.3.5"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.60.1",
