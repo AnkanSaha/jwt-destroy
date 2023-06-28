@@ -5,17 +5,26 @@ import {sign} from 'jsonwebtoken'; // Importing jsonwebtoken for generating the 
 const todayDate = `${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
 
 // Class for all features
+/* The Jwt class is used to generate a token with a payload and optional expiry time. */
 export class Jwt {
 	// Token
-	// eslint-disable-next-line @typescript-eslint/parameter-properties
+
 	private readonly signatureKey: string;
 
+	/**
+ * The constructor function initializes the signatureKey property with the provided value or a default
+ * value of 'secret'.
+ * @param {string} signatureKey - The `signatureKey` parameter is a string that represents the key used
+ * for signing or verifying signatures. It is an optional parameter, meaning it can be provided or
+ * omitted when creating an instance of the class. If no value is provided, the default value is set to
+ * `'secret'`.
+ */
 	constructor(signatureKey: string) {
-		this.signatureKey = signatureKey;
+		this.signatureKey = signatureKey ?? 'secret';
 	}
 
 	// Generate the token
-/**
+	/**
  * The function generates a token using a payload and an optional expiry time, and returns a record
  * containing information about the generated token.
  * @param {unknown} Payload - The `Payload` parameter is of type `unknown`, which means it can accept
