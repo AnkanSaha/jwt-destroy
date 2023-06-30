@@ -1,17 +1,14 @@
 {
   "name": "jwt-destroy",
-  "version": "2.5.3",
+  "version": "2.5.5",
   "description": "JWT-Destroy is an enhanced version of the popular JSONWebToken npm package. It extends its functionality by offering manual expiry control, allowing developers to easily manage token expiration within their applications. With JWT-Destroy, you have more flexibility and control over token expiration, enhancing the security of your application.",
   "main": "./out/destroy.js",
   "types": "./out/destroy.d.ts",
   "scripts": {
     "test": "eslint source/**/*.ts --fix",
     "prepare": "npm test && npm run build",
-    "build": "npm test && tsc"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/AnkanSaha/jwt-destroy.git"
+    "build": "npm test && tsc",
+    "lint": "eslint source/**/*.ts --fix"
   },
   "keywords": [
     "jwt",
@@ -36,7 +33,9 @@
     "eslint-config-xo-typescript": "^0.57.0",
     "typescript": "^5.1.5"
   },
-  "sponsor": {
+  "funding": {
+    "type": "git",
     "url": "https://github.com/sponsors/AnkanSaha"
-  }
+  },
+  "readme": "README.md"
 }
