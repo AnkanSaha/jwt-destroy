@@ -22,7 +22,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.2",
-    "jsonwebtoken": "^9.0.0",
+    "jsonwebtoken": "^9.0.1",
     "outers": "^2.3.5"
   },
   "devDependencies": {
