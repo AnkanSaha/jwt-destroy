@@ -17,6 +17,9 @@ const Operation = new jwt('secret'); // secret is the secret key by default if n
 // Generate a token
 const token = Operation.generate({id: 1, name: 'John Doe'}, '1h'); // 1h is the expiry time by default if not provided
 
+// Generate a Login token
+const token = Operation.generateLoginToken({id: 1, name: 'John Doe'}, 5, '1h'); // 1h is the expiry time by default if not provided
+
 // Verify a token
 const payload = Operation.decode(token); // Returns the payload if the token is valid, else returns a object with error message
 
