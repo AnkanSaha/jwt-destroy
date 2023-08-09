@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import {red} from 'outers'; // Importing from outers for coloring the output
 import {sign, verify} from 'jsonwebtoken'; // Importing jsonwebtoken for generating the token
 
@@ -68,6 +69,55 @@ export class Jwt {
 		}
 	}
 
+	/**
+ * The function generates a login token by repeatedly calling a token generation function for a
+ * specified number of rounds.
+ * @param {unknown} Payload - The `Payload` parameter is of type `unknown` and represents the data that
+ * will be used to generate the login token. It can be any type of data, such as an object or a string.
+ * @param [Rounds=5] - The "Rounds" parameter determines the number of times the token generation
+ * process will be repeated. Each round generates a new token based on the previous token. The default
+ * value is 5 rounds.
+ * @param [expiry=1h] - The `expiry` parameter is a string that represents the expiration time of the
+ * generated token. It is set to a default value of '1h', which means the token will expire after 1
+ * hour.
+ * @returns an object with the following properties:
+ * - status: a boolean indicating whether the token was generated successfully or not.
+ * - message: a string message indicating the result of the token generation.
+ * - toKen: the generated token.
+ * - algoRithm: a string indicating the algorithm used for token generation (HS256 in this case).
+ * - expiry: a string indicating the expiration time of
+ */
+	public async generateLoginToken(Payload: unknown, Rounds = 5, expiry = '1h') {
+		try {
+			let daTa: unknown = Payload; // Set the data to the payload
+			let tiMes = Rounds; // Set the times to the rounds
+
+			while (tiMes > 0) {
+				const result = await this.generate(daTa, expiry); // Destroy the token
+				daTa = result.toKen; // Set the data to the token
+				tiMes -= 1; // Reduce the times
+			}
+
+			return {
+				status: true,
+				message: 'Token generated successfully',
+				toKen: daTa,
+				algoRithm: 'HS256 (Default)',
+				expiry,
+				currentTimeStamp: todayDate,
+			}; // Return the result
+		} catch {
+			const errorResult: Record<string, unknown> = {
+				status: false,
+				message: 'Error generating login token',
+				currentTimeStamp: todayDate,
+				algoRithm: 'HS256 (Default)',
+			}; // Create an error object
+			red('Error generating token'); // Log the error
+			return errorResult; // Return the error
+		}
+	}
+
 	// Destroy the token
 	/**
  * The `destroy` function takes a token, adds ciphers to specific positions, reverses the token, and
@@ -90,7 +140,7 @@ export class Jwt {
 			const modifiedToken: string = tokenArray.join(''); // Join the token
 
 			const result: Record<string, unknown> = {
-				status: 'Success',
+				status: 'Successfully destroyed',
 				message: 'Token destroyed successfully',
 				token: modifiedToken,
 				currentTimeStamp: todayDate,
@@ -128,7 +178,7 @@ export class Jwt {
 			}
 
 			const cipherResult = await this.verifyCipher(token);
-			if (cipherResult.status === 'Destroyed') {
+			if (cipherResult.status === 'Already Destroyed') {
 				return cipherResult;
 			}
 
@@ -173,7 +223,7 @@ export class Jwt {
 			}
 
 			return {
-				status: 'Destroyed',
+				status: 'Already Destroyed',
 				message: 'Token is Destroyed Manually with the destroy() method',
 				currentTimeStamp: todayDate,
 				algoRithm: 'HS256 (Default)',
