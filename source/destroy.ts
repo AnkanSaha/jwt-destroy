@@ -183,7 +183,14 @@ export class Jwt {
 			}
 
 			// Check if the token is destroyed by manually checking the token
-			return verify(token, this.signatureKey); // Verify the token
+			const resultData = verify(token, this.signatureKey); // Decode the token
+			return {
+				status: 'Success',
+				message: 'Token decoded successfully',
+				data: resultData,
+				currentTimeStamp: todayDate,
+				algoRithm: 'HS256 (Default)',
+			}; // Return the result
 		} catch {
 			return {
 				status: 'Invalid',
