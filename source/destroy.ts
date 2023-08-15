@@ -35,7 +35,7 @@ export class Jwt {
  * expire after 1 hour.
  * @returns a Promise that resolves to a Record<string, unknown> object.
  */
-	public async generate(Payload: unknown, expiry = '1h'): Promise<Record<string, unknown>> {
+	public async generate(Payload: unknown, expiry = '1h'): Promise<Record<string, any>> {
 		try {
 			if (!Payload) {
 				red('Payload is required'); // Log the error
@@ -48,7 +48,7 @@ export class Jwt {
 			}
 
 			const signedData: string = sign({data: Payload}, this.signatureKey, {expiresIn: expiry}); // Generate the token
-			const fullResult: Record<string, unknown> = {
+			const fullResult: Record<string, any> = {
 				status: 'Success',
 				message: 'Token generated successfully',
 				toKen: signedData,
@@ -58,7 +58,7 @@ export class Jwt {
 			}; // Create a result object
 			return fullResult; // Return the result
 		} catch {
-			const errorResult: Record<string, unknown> = {
+			const errorResult: Record<string, any> = {
 				status: 'error',
 				message: 'Error generating token',
 				currentTimeStamp: todayDate,
@@ -107,7 +107,7 @@ export class Jwt {
 				currentTimeStamp: todayDate,
 			}; // Return the result
 		} catch {
-			const errorResult: Record<string, unknown> = {
+			const errorResult: Record<string, any> = {
 				status: false,
 				message: 'Error generating login token',
 				currentTimeStamp: todayDate,
@@ -126,7 +126,7 @@ export class Jwt {
  * @returns The `destroy` function returns a Promise that resolves to a `Record<string, unknown>`
  * object.
  */
-	public async destroy(token: string): Promise<Record<string, unknown>> {
+	public async destroy(token: string): Promise<Record<string, any>> {
 		try {
 			const cipherList = ['SIDF524', 'LHypk41', '@thusngvgvergh', 'egfr##.gokro', 'frevnjnr@872@erge']; // List of supported algorithms keys
 			const positions: number[] = [5, 3, 9, 4, 7]; // List of positions
@@ -139,7 +139,7 @@ export class Jwt {
 			tokenArray = tokenArray.reverse(); // Reverse the token
 			const modifiedToken: string = tokenArray.join(''); // Join the token
 
-			const result: Record<string, unknown> = {
+			const result: Record<string, any> = {
 				status: 'Successfully destroyed',
 				message: 'Token destroyed successfully',
 				token: modifiedToken,
@@ -166,7 +166,7 @@ export class Jwt {
  * @returns The function `decode` returns a Promise that resolves to an unknown value. The value being
  * returned depends on the conditions inside the function.
  */
-	public async decode(token: string): Promise<unknown> {
+	public async decode(token: string): Promise<any> {
 		try {
 			if (!token) {
 				return {
