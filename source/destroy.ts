@@ -95,7 +95,7 @@ export class Jwt {
 			while (tiMes > 0) {
 				const result = await this.generate(daTa, expiry); // Destroy the token
 				daTa = result.toKen; // Set the data to the token
-				tiMes -= 1; // Reduce the times
+				tiMes--; // Reduce the times
 			}
 
 			return {
